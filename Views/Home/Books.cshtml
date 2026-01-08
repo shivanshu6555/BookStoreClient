@@ -1,0 +1,46 @@
+﻿@using BookStoreManagmentSystem.DTO_s
+
+@{
+    ViewData["Title"] = "MyBooks";
+}
+
+@model BookStoreClient.Models.BooksViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Available Books</h1>
+</div>
+<div class="mb-3">
+    <form asp-controller="Home" asp-action="Books">
+    <input name="SearchTerm" type="text" class="form-control" placeholder="Enter to search">
+    <button type="submit" class="btn btn-primary mt-3 mb-3">Search</button>
+    </form>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+            <th>Id</th>
+            <th><a href="/Home/Books?OrderBy=@Model.EmailOrderBy">Title</a></th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Stock Quantity</th>
+            <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                @foreach(var item in Model.BooksResponse)
+                {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Author</td>
+                    <td>@item.Price</td>
+                    <td>@item.StockQuantity</td>
+                    <td>@item.Category</td>
+                </tr>
+                }
+                <h4>@Model.EmailOrderBy</h4>
+        </tbody>
+    </table>
+</div>

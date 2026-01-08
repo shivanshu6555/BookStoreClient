@@ -20,11 +20,11 @@
         <thead>
             <tr>
             <th>Id</th>
-            <th><a href="/Home/Books?OrderBy=@Model.EmailOrderBy">Title</a></th>
-            <th>Author</th>
-            <th>Price</th>
-            <th>Stock Quantity</th>
-            <th>Category</th>
+            <th><a href="/Home/Books?OrderBy=@Model.TitleOrderBy">Title</a></th>
+            <th><a href="/Home/Books?OrderBy=@Model.AuthorOrderBy">Author</a></th>
+            <th><a href="/Home/Books?OrderBy=@Model.PriceSort">Price</a></th>
+            <th><a href="/Home/Books?OrderBy=@Model.StockSort">Stock Quantity</a></th>
+            <th><a href="/Home/Books?OrderBy=@Model.CategoryOrderBy">Category</a></th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +40,6 @@
                     <td>@item.Category</td>
                 </tr>
                 }
-                <h4>@Model.EmailOrderBy</h4>
         </tbody>
     </table>
 </div>

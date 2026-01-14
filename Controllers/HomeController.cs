@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
 
 namespace BookStoreClient.Controllers
@@ -12,7 +13,6 @@ namespace BookStoreClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly HttpClient _httpClient;
-
         public HomeController(ILogger<HomeController> logger, HttpClient httpClient)
         {
             _logger = logger;
@@ -27,7 +27,7 @@ namespace BookStoreClient.Controllers
         public async Task<IActionResult> Books(string SearchTerm, string OrderBy = "title_asc")
         {
             SearchTerm = string.IsNullOrEmpty(SearchTerm) ? "" : SearchTerm.ToLower();
-            var response = await _httpClient.GetAsync("https://localhost:7033/api/BooksAPi");
+            var response = await _httpClient.GetAsync("https://localhost:7033/api/BooksAPi?page=1&pageSize=5");
             if (!response.IsSuccessStatusCode)
                 return View(new List<Author>());
             BooksViewModel viewModel = new BooksViewModel();
@@ -56,8 +56,6 @@ namespace BookStoreClient.Controllers
             viewModel.PriceSort = OrderBy == "price_asc" ? "price_desc" : "price_asc";
             viewModel.StockSort = OrderBy == "stock_asc" ? "stock_desc" : "stock_asc";
             viewModel.CategoryOrderBy = OrderBy == "category_asc" ? "category_desc" : "category_asc";
-
-           
 
             switch (OrderBy)
             {

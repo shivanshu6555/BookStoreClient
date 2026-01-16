@@ -1,6 +1,4 @@
-﻿@using BookStoreManagmentSystem.DTO_s
-
-@{
+﻿@{
     ViewData["Title"] = "MyBooks";
 }
 
@@ -38,8 +36,28 @@
                     <td>@item.Price</td>
                     <td>@item.StockQuantity</td>
                     <td>@item.Category</td>
+                    <td>@item.Category</td>
                 </tr>
                 }
         </tbody>
     </table>
+    <div class="align-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="/Home/Books?Page=1">1</a></li>
+                <li class="page-item"><a class="page-link" href="/Home/Books?Page=2">2</a></li>
+                <li class="page-item"><a class="page-link" href="/Home/Books?Page=3">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>

@@ -1,8 +1,6 @@
+using BookStoreClient.DTOs;
 using BookStoreClient.Models;
-using BookStoreManagmentSystem.DTO_s;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -24,18 +22,19 @@ namespace BookStoreClient.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Books(string SearchTerm, string OrderBy = "title_asc")
+        public async Task<IActionResult> Books(string SearchTerm, int Page = 1, string OrderBy = "title_asc")
         {
+            
             SearchTerm = string.IsNullOrEmpty(SearchTerm) ? "" : SearchTerm.ToLower();
-            var response = await _httpClient.GetAsync("https://localhost:7033/api/BooksAPi?page=1&pageSize=5");
+            var response = await _httpClient.GetAsync($"https://localhost:7033/api/BooksAPi?page={Page}&pageSize=5");
             if (!response.IsSuccessStatusCode)
                 return View(new List<Author>());
             BooksViewModel viewModel = new BooksViewModel();
             var json = await response.Content.ReadAsStringAsync();
-            var books = JsonSerializer.Deserialize<List<BookResponseDto>>(json,
+            var ResponseData = JsonSerializer.Deserialize<PagedBooksResponseDto>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            List<BookResponseDto> book = books.Where(a => a.Title.ToLower().StartsWith(SearchTerm) || a.Author.ToLower().StartsWith(SearchTerm)).ToList();
-
+            var books = ResponseData.Data.ToList();
+            var book = books.Where(a => a.Title.StartsWith(SearchTerm) || a.Author.StartsWith(SearchTerm)).ToList();
             if (SearchTerm != "")
             {
 
@@ -56,6 +55,7 @@ namespace BookStoreClient.Controllers
             viewModel.PriceSort = OrderBy == "price_asc" ? "price_desc" : "price_asc";
             viewModel.StockSort = OrderBy == "stock_asc" ? "stock_desc" : "stock_asc";
             viewModel.CategoryOrderBy = OrderBy == "category_asc" ? "category_desc" : "category_asc";
+            viewModel.TotalPages = ResponseData.Pagination.TotalPages;
 
             switch (OrderBy)
             {

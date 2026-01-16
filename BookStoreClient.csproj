@@ -6,8 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BookStoreManagmentSystem\BookStoreManagmentSystem.csproj" />
-  </ItemGroup>
-
 </Project>

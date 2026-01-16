@@ -1,4 +1,4 @@
-﻿using BookStoreManagmentSystem.DTO_s;
+﻿using BookStoreClient.DTOs;
 
 namespace BookStoreClient.Models
 {
@@ -10,5 +10,8 @@ namespace BookStoreClient.Models
         public string PriceSort { get; set; }
         public string StockSort { get; set; }
         public string CategoryOrderBy { get; set; }
+        public int TotalPages { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
     }
 }

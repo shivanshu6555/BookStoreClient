@@ -48,6 +48,8 @@ namespace BookStoreClient.Controllers
                 viewModel = new BooksViewModel()
                 {
                     BooksResponse = books,
+                    CurrentPage = ResponseData.Pagination.CurrentPage,
+                    TotalPages = ResponseData.Pagination.TotalPages
                 };
             }
             viewModel.TitleOrderBy = OrderBy == "title_asc" ? "title_desc" : "title_asc";

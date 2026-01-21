@@ -4,6 +4,7 @@ namespace BookStoreClient.Models
 {
     public class BooksViewModel
     {
+        public Books Book { get; set; }
         public List<BookResponseDto> BooksResponse { get; set; }
         public string TitleOrderBy { get; set; }
         public string AuthorOrderBy { get; set; }

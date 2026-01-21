@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "AddBooks";
+}
+@model BookStoreClient.Models.Books
+
+<div class="mb-5">Add books form</div>
+
+<form class="row g-3" asp-controller="Home" asp-action="AddBooksForm" method="post">
+    <div class="col-md-6">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="Title">
+    </div>
+    <div class="col-md-6">
+        <label for="author" class="form-label">Author</label>
+        <input type="text" class="form-control" asp-for="Author.Name">
+    </div>
+    <div class="col-md-6">
+        <label for="Price" class="form-label">Price</label>
+        <input type="number" class="form-control" asp-for=Price">
+    </div>
+    <div class="col-md-6">
+        <label for="Stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" asp-for="StockQuantity">
+    </div>
+    <div class="col-md-4">
+        <label for="inputState" class="form-label">Category</label>
+        <select id="inputState" class="form-select" asp-for="Category">
+            <option selected>@(BookCategory.Science)</option>
+            <option selected>@(BookCategory.Fiction)</option>
+            <option selected>@(BookCategory.NonFiction)</option>
+            <option selected>@(BookCategory.Technology)</option>
+            <option selected>@(BookCategory.Biography)</option>
+            <option selected>@(BookCategory.History)</option>
+            <option selected>@(BookCategory.Children)</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+                Check me out
+            </label>
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+</form>

@@ -22,6 +22,16 @@ namespace BookStoreClient.Controllers
             return View();
         }
 
+        public IActionResult AddBooks()
+        {
+            return View();
+        }
+
+        public IActionResult AddBooksForm(Books model)
+        {
+            return RedirectToAction("AddBooks");
+        }
+
         public async Task<IActionResult> Books(string SearchTerm, int Page = 1, string OrderBy = "title_asc")
         {
             

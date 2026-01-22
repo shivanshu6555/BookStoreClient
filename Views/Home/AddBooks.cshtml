@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "AddBooks";
 }
+
 @model BookStoreClient.Models.Books
 
 <div class="mb-5">Add books form</div>
@@ -8,19 +9,19 @@
 <form class="row g-3" asp-controller="Home" asp-action="AddBooksForm" method="post">
     <div class="col-md-6">
         <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" asp-for="Title">
+        <input type="text" value="aspdotnet" class="form-control" asp-for="Title">
     </div>
     <div class="col-md-6">
         <label for="author" class="form-label">Author</label>
-        <input type="text" class="form-control" asp-for="Author.Name">
+        <input type="text" value="muskan" class="form-control" asp-for="Author.Name">
     </div>
     <div class="col-md-6">
         <label for="Price" class="form-label">Price</label>
-        <input type="number" class="form-control" asp-for=Price">
+        <input type="number" value=101 class="form-control" asp-for=Price">
     </div>
     <div class="col-md-6">
         <label for="Stock" class="form-label">Stock</label>
-        <input type="number" class="form-control" asp-for="StockQuantity">
+        <input type="number" value=11 class="form-control" asp-for="StockQuantity">
     </div>
     <div class="col-md-4">
         <label for="inputState" class="form-label">Category</label>

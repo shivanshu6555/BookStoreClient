@@ -12,6 +12,13 @@ namespace BookStoreClient.DTOs
         public BookCategory Category { get; set; }
     }
 
+    public class AuthorResponseDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<BookResponseDto> Books { get; set; }
+    }
+
     public record struct PaginationDto
     {
         public int TotalPages { get; set; }

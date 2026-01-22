@@ -1,9 +1,11 @@
 using BookStoreClient.DTOs;
 using BookStoreClient.Models;
+using BookStoreClient.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace BookStoreClient.Controllers
 {
@@ -27,8 +29,17 @@ namespace BookStoreClient.Controllers
             return View();
         }
 
-        public IActionResult AddBooksForm(Books model)
+        public async Task<IActionResult> AddBooksForm(Books model)
         {
+            var book = new Books { Title = model.Title, Price = model.Price, StockQuantity = model.StockQuantity, Category = model.Category };
+            List<Books> books = new List<Books>();
+            books.Add(book);
+            var Bookrequest = new CreateAuthorDto { name = model.Author.Name, Books = books };
+
+            var response = await _httpClient.PostAsJsonAsync("https://localhost:7033/api/BooksApi", Bookrequest);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
             return RedirectToAction("AddBooks");
         }
 
@@ -36,7 +47,13 @@ namespace BookStoreClient.Controllers
         {
             
             SearchTerm = string.IsNullOrEmpty(SearchTerm) ? "" : SearchTerm.ToLower();
-            var response = await _httpClient.GetAsync($"https://localhost:7033/api/BooksAPi?page={Page}&pageSize=5");
+            int pageSize = 5;
+            if (SearchTerm != string.Empty)
+            {
+                Page = 1;
+                pageSize = 100;
+            }
+            var response = await _httpClient.GetAsync($"https://localhost:7033/api/BooksAPi?page={Page}&pageSize={pageSize}");
             if (!response.IsSuccessStatusCode)
                 return View(new List<Author>());
             BooksViewModel viewModel = new BooksViewModel();
@@ -44,7 +61,7 @@ namespace BookStoreClient.Controllers
             var ResponseData = JsonSerializer.Deserialize<PagedBooksResponseDto>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             var books = ResponseData.Data.ToList();
-            var book = books.Where(a => a.Title.StartsWith(SearchTerm) || a.Author.StartsWith(SearchTerm)).ToList();
+            var book = books.Where(a => a.Title.ToLower().StartsWith(SearchTerm) || a.Author.ToLower().StartsWith(SearchTerm)).ToList();
             if (SearchTerm != "")
             {
 

@@ -1,11 +1,16 @@
 using BookStoreClient.DTOs;
 using BookStoreClient.Models;
 using BookStoreClient.Models.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static BookStoreClient.Models.ViewModels.LoginViewModel;
 
 namespace BookStoreClient.Controllers
 {
@@ -19,16 +24,63 @@ namespace BookStoreClient.Controllers
             _httpClient = httpClient;
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> UserLogin()
+        {
+            var UserModel = new LoginViewModel { Username = "Shivanshu", Password = "Rodeo1" };
+            var response = await _httpClient.PostAsJsonAsync("https://localhost:7033/api/Auth/Login", UserModel);
+
+            if (response == null || !response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError("", "Invalid credentials");
+                return View("~/Views/Auth/Login.cshtml");
+            }
+
+            var token = await response.Content.ReadAsStringAsync();
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, UserModel.Username),
+                new Claim("AccessToken", token)
+            };
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Login", "Home");
+        }
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult AddBooks()
         {
             return View();
         }
 
+        [Route("Auth/Login")]
+        public async Task<ActionResult> Login()
+        {
+            await UserLogin();
+            return View("~/Views/Auth/Login.cshtml");
+        }
+
+        [Route("Auth/Register")]
+        public IActionResult Register()
+        {
+            return View("~/Views/Auth/Register.cshtml");
+        }
         public async Task<IActionResult> AddBooksForm(Books model)
         {
             var book = new Books { Title = model.Title, Price = model.Price, StockQuantity = model.StockQuantity, Category = model.Category };
